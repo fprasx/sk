@@ -1,3 +1,3 @@
 install:
     dune build
-    cp _build/install/default/bin/sk ~/.local/bin/sk
+    cp -R _build/install/default/bin/sk ~/.local/bin/sk
