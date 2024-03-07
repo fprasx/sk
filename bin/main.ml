@@ -1,13 +1,13 @@
 open Unix
 
-let scdir = getenv "HOME" ^ "/.local/share/sc/"
+let skdir = getenv "HOME" ^ "/.local/share/sk/"
 
 let usage =
-  "sc script-name [script-args]\n\
-   sc --add script-name script-file\n\
-   sc --remove script-name\n\
-   sc --list\n\
-   sc --help"
+  "sk script-name [script-args]\n\
+   sk --add script-name script-file\n\
+   sk --remove script-name\n\
+   sk --list\n\
+   sk --help"
 
 let fatal msg =
   let _ = print_endline ("\x1b[0;31mFATAL \x1b[0m" ^ msg) in
@@ -33,28 +33,28 @@ let parse_args =
   | [] -> fatal "no arguments provided"
 
 (* init scripts directory *)
-let _ = if not (Sys.file_exists scdir) then mkdir scdir 0o755
+let _ = if not (Sys.file_exists skdir) then mkdir skdir 0o755
 
 let () =
   match parse_args with
   | Help -> print_endline usage
   | List ->
-      let _ = Array.map print_endline (Sys.readdir scdir) in
+      let _ = Array.map print_endline (Sys.readdir skdir) in
       ()
   | Add { name; file } ->
       let script =
         if Sys.file_exists file then Core.In_channel.read_all file
         else fatal ("script-file " ^ file ^ " does not exist")
       in
-      let fd = openfile (scdir ^ name) [ O_RDWR; O_CREAT ] 0x755 in
+      let fd = openfile (skdir ^ name) [ O_RDWR; O_CREAT ] 0x755 in
       let _ = write fd (String.to_bytes script) 0 (String.length script) in
       close fd
   | Remove name ->
-      let script = scdir ^ name in
+      let script = skdir ^ name in
       if Sys.file_exists script then Sys.remove script
       else fatal ("no script named " ^ name)
   | Run { cmd; args } ->
       let _ =
-        create_process (scdir ^ cmd) (Array.of_list args) stdin stdout stderr
+        create_process (skdir ^ cmd) (Array.of_list args) stdin stdout stderr
       in
       ()

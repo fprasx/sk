@@ -1,6 +1,6 @@
 (lang dune 3.14)
 
-(name sc)
+(name sk)
 
 (generate_opam_files true)
 
@@ -16,7 +16,7 @@
 (documentation https://url/to/documentation)
 
 (package
- (name sc)
+ (name sk)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends ocaml dune)
