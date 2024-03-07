@@ -46,7 +46,7 @@ let () =
         if Sys.file_exists file then Core.In_channel.read_all file
         else fatal ("script-file " ^ file ^ " does not exist")
       in
-      let fd = openfile (skdir ^ name) [ O_RDWR; O_CREAT ] 0x755 in
+      let fd = openfile (skdir ^ name) [ O_RDWR; O_CREAT ] 0o755 in
       let _ = write fd (String.to_bytes script) 0 (String.length script) in
       close fd
   | Remove name ->
