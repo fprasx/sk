@@ -1,0 +1,5 @@
+(executable
+ (public_name sc)
+ (name main)
+ (preprocess (pps ppx_show))
+ (libraries sc ppx_show.runtime unix core))
