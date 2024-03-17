@@ -54,7 +54,12 @@ let () =
       if Sys.file_exists script then Sys.remove script
       else fatal ("no script named " ^ name)
   | Run { cmd; args } ->
-      let _ =
-        create_process (skdir ^ cmd) (Array.of_list args) stdin stdout stderr
-      in
+      let cmd = skdir ^ cmd in
+      (*
+       * The args passed to create_process are not additionally args for the
+       * program, but the actual argv it will have. Therefore we need to prepend
+       * the user specified arguments with the program name
+       *)
+      let args = Array.of_list (cmd :: args) in
+      let _ = create_process cmd args stdin stdout stderr in
       ()
